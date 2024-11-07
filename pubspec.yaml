@@ -1,0 +1,99 @@
+name: pollpe
+description: "Poll Pe - Flutter Task Project"
+
+
+publish_to: 'none' 
+
+
+
+
+
+
+
+
+
+
+
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+
+
+
+
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  
+  
+  cupertino_icons: ^1.0.8
+  image_picker: ^1.1.2
+  permission_handler: ^11.3.1
+  uuid: ^4.5.1
+  provider: ^6.1.2
+  shared_preferences: ^2.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  
+  
+  
+  
+  
+  flutter_lints: ^4.0.0
+
+
+
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/
+#    - assets/icons/
+    - assets/logo/
+  fonts:
+    - family: VarelaRound
+      fonts:
+        - asset: assets/fonts/Varela_Round/VarelaRound-Regular.ttf
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
