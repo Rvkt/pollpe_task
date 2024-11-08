@@ -19,6 +19,12 @@ class QuizCardWidget extends StatefulWidget {
 
 class _QuizCardWidgetState extends State<QuizCardWidget> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     double width = ScreenUtil.screenWidth;
@@ -28,7 +34,9 @@ class _QuizCardWidgetState extends State<QuizCardWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => QuizDetailsScreen(poll: widget.poll,),
+            builder: (context) => QuizDetailsScreen(
+              poll: widget.poll,
+            ),
           ),
         );
       },

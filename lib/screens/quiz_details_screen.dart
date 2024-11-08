@@ -21,7 +21,9 @@ class _QuizDetailsPageState extends State<QuizDetailsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getComments();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getComments();
+    });
   }
 
   void getComments() {
@@ -32,162 +34,197 @@ class _QuizDetailsPageState extends State<QuizDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
+      appBar: AppBar(
+        title: Text(widget.poll.title),
+      ),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 24,
-                  child: Icon(
-                    Icons.person,
-                    size: 32,
-                  ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.poll.createdBy,
-                        style: TextStyle(
-                          fontFamily: 'VarelaRound',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text('@${widget.poll.createdBy}'),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: AppPalette.accentColor,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: const Text(
-                    'Follow', // Replace with dynamic question count
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 24,
-            ),
             Card(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      '${widget.poll.title}',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontFamily: 'VarelaRound',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
+              color: Colors.white,
+              margin: const EdgeInsets.all(8),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    const CircleAvatar(
+                      radius: 24,
+                      child: Icon(
+                        Icons.person,
+                        size: 32,
                       ),
                     ),
-                  ),
-                  Image.asset(
-                    'assets/images/rb_30762.png',
-                    height: 160,
-                  ),
-                  Card(
-                    shadowColor: AppPalette.transparentColor,
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Text(
-                                  '${widget.poll.questions.length}',
-                                  style: TextStyle(
-                                    fontFamily: 'VarelaRound',
-                                    fontSize: 16,
-                                    color: AppPalette.accentColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Text('Questions'),
-                              ],
+                          Text(
+                            widget.poll.createdBy,
+                            style: const TextStyle(
+                              fontFamily: 'VarelaRound',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Text(
-                                  '${widget.poll.numberOfVotes}',
-                                  style: TextStyle(
-                                    fontFamily: 'VarelaRound',
-                                    fontSize: 16,
-                                    color: AppPalette.accentColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Text('Votes'),
-                              ],
-                            ),
+                          const SizedBox(
+                            height: 8,
                           ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Text(
-                                  '${widget.poll.createdOn}',
-                                  style: const TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontFamily: 'VarelaRound',
-                                    fontSize: 16,
-                                    color: AppPalette.accentColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Text('Created Date'),
-                              ],
-                            ),
-                          ),
+                          Text('@${widget.poll.createdBy}'),
                         ],
                       ),
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: AppPalette.accentColor,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: const Text(
+                        'Follow', // Replace with dynamic question count
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(
               height: 8,
             ),
-            Expanded(
-              child: CommentsScreen(
-                poll: widget.poll,
+            Card(
+              color: Colors.white,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 240,
+                    child: Stack(
+                      children: [
+                        // Background image
+                        Image.asset(
+                          'assets/images/rb_30762.png',
+                          height: 160,
+                          width: double.infinity, // To make the image stretch across the screen width
+                          fit: BoxFit.contain, // To ensure the image covers the entire width and height without distortion
+                        ),
+
+                        // Card on top of the image
+                        Positioned(
+                          top: 160, // Adjust the top position as needed to place the card
+                          left: 4, // You can adjust the left and right margins
+                          right: 4,
+                          child: Card(
+                            shadowColor: AppPalette.transparentColor,
+                            elevation: 8, // You can adjust the elevation to make the card stand out
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          '${widget.poll.questions.length}',
+                                          style: const TextStyle(
+                                            fontFamily: 'VarelaRound',
+                                            fontSize: 16,
+                                            color: AppPalette.accentColor,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        const Text('Questions'),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          '${widget.poll.numberOfVotes}',
+                                          style: const TextStyle(
+                                            fontFamily: 'VarelaRound',
+                                            fontSize: 16,
+                                            color: AppPalette.accentColor,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        const Text('Votes'),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          '${widget.poll.createdOn}',
+                                          style: const TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            fontFamily: 'VarelaRound',
+                                            fontSize: 16,
+                                            color: AppPalette.accentColor,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        const Text('Created Date'),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 16),
+            Card(
+              margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+              color: AppPalette.secondaryColor,
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'User Comments',
+                      style: TextStyle(
+                        fontFamily: 'VarelaRound',
+                        fontSize: 16,
+                        color: AppPalette.accentColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    endIndent: 24,
+                    indent: 24,
+                  ),
+                  CommentsScreen(
+                    poll: widget.poll,
+                  ),
+                ],
+              ),
+            ),
             Row(
               children: [
                 Expanded(

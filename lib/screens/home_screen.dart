@@ -20,8 +20,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -111,6 +109,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 Consumer<PollProvider>(
                   builder: (context, pollProvider, child) {
                     List<Poll> polls = pollProvider.polls;
+
+                    // Check if polls data is available
+                    if (polls.isEmpty) {
+                      return Center(
+                        child: Text(
+                          'No Polls Available',
+                          style: TextStyle(
+                            fontFamily: 'VarelaRound',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: AppPalette.accentColor,
+                          ),
+                        ),
+                      );
+                    }
+
                     return SizedBox(
                       height: height * 0.3,
                       child: ListView.builder(
@@ -145,59 +159,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-// Column(
-//   children: [
-//     Container(
-//       width: width,
-//       padding: const EdgeInsets.symmetric(horizontal: 16),
-//       child: Row(
-//         children: [
-//           const Expanded(
-//             child: Text(
-//               'Polls',
-//               style: TextStyle(
-//                 fontFamily: 'VarelaRound',
-//                 fontSize: 20,
-//                 fontWeight: FontWeight.w600,
-//               ),
-//             ),
-//           ),
-//           TextButton(
-//             onPressed: () {},
-//             child: const Row(
-//               children: [
-//                 Text(
-//                   'View all',
-//                   style: TextStyle(
-//                     fontFamily: 'VarelaRound',
-//                     fontSize: 16,
-//                     fontWeight: FontWeight.w600,
-//                   ),
-//                 ),
-//                 SizedBox(
-//                   width: 16,
-//                 ),
-//                 Icon(
-//                   Icons.arrow_forward,
-//                   size: 20,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     ),
-//     SizedBox(
-//       height: height * 0.3, // Set a fixed height for the horizontal ListView
-//       child: ListView.builder(
-//         scrollDirection: Axis.horizontal,
-//         itemCount: 5,
-//         padding: EdgeInsets.zero,
-//         itemBuilder: (context, index) {
-//           return const QuizCardWidget();
-//         },
-//       ),
-//     ),
-//   ],
-// ),
