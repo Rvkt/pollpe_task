@@ -8,14 +8,29 @@ class PollProvider with ChangeNotifier {
   // List of polls
   List<Poll> _polls = [];
 
+  // List of all comments
+  List<Comment> _comments = [];
+
+
+
   // Getter for polls
   List<Poll> get polls => _polls;
+
+  // Getter for comments
+  List<Comment> get comments => _comments;
+
 
   // Setter to replace the entire list of polls
   void setPolls(List<Poll> polls) {
     _polls = polls;
     notifyListeners();
     _savePollsToStorage();
+  }
+
+  // Setter to replace the entire list of comments
+  void setComments(List<Comment> comments) {
+    _comments = comments;
+    notifyListeners();
   }
 
   // Fetch polls from local storage
@@ -42,7 +57,14 @@ class PollProvider with ChangeNotifier {
             createdOn: DateTime.now(),
             createdBy: 'User 1',
             comments: [
-              Comment(text: 'First comment', dateTime: DateTime.now(), user: User(name: 'Ravi Kant', username: '@Rvkt',), pollId: '1'),
+              Comment(
+                  text: 'First comment',
+                  dateTime: DateTime.now(),
+                  user: User(
+                    name: 'Ravi Kant',
+                    username: '@Rvkt',
+                  ),
+                  pollId: '1'),
             ], // Adding some comments
           ),
         ];
@@ -70,7 +92,6 @@ class PollProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
   // Save the polls list to local storage
   Future<void> _savePollsToStorage() async {
     final prefs = await SharedPreferences.getInstance();
@@ -97,8 +118,19 @@ class PollProvider with ChangeNotifier {
       _savePollsToStorage();
 
       fetchPolls();
+      getCommentsForPoll(updatedPoll.id);
+
     } else {
       print("Poll with ID ${updatedPoll.id} not found.");
     }
+  }
+
+  // Fetch comments for a specific poll by ID
+  List<Comment> getCommentsForPoll(String pollId) {
+    final poll = _polls.firstWhere(
+      (poll) => poll.id == pollId,
+    );
+    setComments(poll.comments);
+    return poll.comments;
   }
 }

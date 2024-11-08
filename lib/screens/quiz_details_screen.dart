@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pollpe/core/theme/app_palette.dart';
 import 'package:pollpe/widgets/custom_elevated_button.dart';
+import 'package:provider/provider.dart';
 
 import '../models/poll.dart';
+import '../provider/PollProvider.dart';
 import 'comments_widget.dart';
 
 class QuizDetailsScreen extends StatefulWidget {
   final Poll poll;
+
   const QuizDetailsScreen({super.key, required this.poll});
 
   @override
@@ -14,20 +17,16 @@ class QuizDetailsScreen extends StatefulWidget {
 }
 
 class _QuizDetailsPageState extends State<QuizDetailsScreen> {
-
-
-  List<Comment> comments = [];
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getComments();
   }
 
-  void setComments(){
-    setState(() {
-      comments = widget.poll.comments;
-    });
+  void getComments() {
+    PollProvider provider = Provider.of<PollProvider>(context, listen: false);
+    provider.getCommentsForPoll(widget.poll.id);
   }
 
   @override
@@ -57,7 +56,7 @@ class _QuizDetailsPageState extends State<QuizDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${widget.poll.createdBy}',
+                        widget.poll.createdBy,
                         style: TextStyle(
                           fontFamily: 'VarelaRound',
                           fontSize: 16,
@@ -158,7 +157,7 @@ class _QuizDetailsPageState extends State<QuizDetailsScreen> {
                               children: [
                                 Text(
                                   '${widget.poll.createdOn}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     overflow: TextOverflow.ellipsis,
                                     fontFamily: 'VarelaRound',
                                     fontSize: 16,
@@ -184,7 +183,9 @@ class _QuizDetailsPageState extends State<QuizDetailsScreen> {
               height: 8,
             ),
             Expanded(
-              child: CommentsScreen(poll: widget.poll,),
+              child: CommentsScreen(
+                poll: widget.poll,
+              ),
             ),
             const SizedBox(height: 16),
             Row(

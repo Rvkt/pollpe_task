@@ -3,7 +3,7 @@ import 'package:pollpe/core/theme/app_palette.dart';
 import 'package:provider/provider.dart';
 
 import '../models/poll.dart';
-import '../provider/PollProvider.dart'; // Assuming it's used somewhere
+import '../provider/PollProvider.dart';
 
 class CommentsScreen extends StatefulWidget {
   final Poll poll;
@@ -20,10 +20,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
   void _addComment(Poll updatedPoll) {
     PollProvider provider = Provider.of<PollProvider>(context, listen: false);
     provider.updatePoll(updatedPoll);
-
-    provider.fetchPolls();
   }
-
 
   void _showCommentBottomSheet(BuildContext context, Poll poll) {
     showModalBottomSheet(
@@ -92,7 +89,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                       createdBy: poll.createdBy,
                       comments: updatedComments,
                     );
-// Call the method to update the poll with the new comment
+
+                    // Call the method to update the poll with the new comment
                     _addComment(updatedPoll);
 
                     // Clear the comment input and close the bottom sheet
@@ -120,24 +118,29 @@ class _CommentsScreenState extends State<CommentsScreen> {
     return Card(
       child: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.poll.comments.length,
-              itemBuilder: (context, index) {
-                final comment = widget.poll.comments[index];
-                return ListTile(
-                  leading: const CircleAvatar(
-                    radius: 24,
-                    child: Icon(Icons.person, size: 32),
-                  ),
-                  title: Text(
-                    comment.user.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(comment.text),
-                );
-              },
-            ),
+          Consumer<PollProvider>(
+            builder: (context, pollProvider, child) {
+              List<Comment> comments = pollProvider.getCommentsForPoll(widget.poll.id);
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: widget.poll.comments.length,
+                  itemBuilder: (context, index) {
+                    final comment = comments[index];
+                    return ListTile(
+                      leading: const CircleAvatar(
+                        radius: 24,
+                        child: Icon(Icons.person, size: 32),
+                      ),
+                      title: Text(
+                        comment.user.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(comment.text),
+                    );
+                  },
+                ),
+              );
+            },
           ),
           TextButton(
             onPressed: () => _showCommentBottomSheet(context, widget.poll),
@@ -146,9 +149,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
               children: [
                 const Icon(
                   Icons.edit,
-                  size: 20, // Adjust the size of the icon as needed
+                  size: 20,
                 ),
-                const SizedBox(width: 8), // Space between icon and text
+                const SizedBox(width: 8),
                 Text(
                   '${widget.poll.createdBy}, enter your comment',
                   textAlign: TextAlign.center,
