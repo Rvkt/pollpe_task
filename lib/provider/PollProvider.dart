@@ -117,8 +117,8 @@ class PollProvider with ChangeNotifier {
       notifyListeners();
       _savePollsToStorage();
 
-      fetchPolls();
-      getCommentsForPoll(updatedPoll.id);
+      // fetchPolls();
+      // getCommentsForPoll(updatedPoll.id);
 
     } else {
       print("Poll with ID ${updatedPoll.id} not found.");

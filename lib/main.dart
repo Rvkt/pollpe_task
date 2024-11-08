@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pollpe/provider/PollProvider.dart';
+import 'package:pollpe/provider/comment_provider.dart';
 import 'package:provider/provider.dart';
 import 'screens/home_screen.dart'; // Assuming you have a HomeScreen widget
 
@@ -14,13 +15,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => PollProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => PollProvider()),
+        ChangeNotifierProvider(create: (context) => CommentProvider()),
+      ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Poll Pe',
-        home: HomeScreen(), // Your HomeScreen where you want to use the provider
+        home: HomeScreen(),
       ),
     );
   }
 }
+

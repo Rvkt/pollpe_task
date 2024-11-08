@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/poll.dart';
 import '../provider/PollProvider.dart';
+import '../provider/comment_provider.dart';
 
 class CommentsScreen extends StatefulWidget {
   final Poll poll;
@@ -16,6 +17,15 @@ class CommentsScreen extends StatefulWidget {
 
 class _CommentsScreenState extends State<CommentsScreen> {
   final TextEditingController _commentController = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    final commentProvider = Provider.of<CommentProvider>(context, listen: false);
+    commentProvider.initializeCommentsForPoll(widget.poll.comments);
+  }
 
   void _addComment(Poll updatedPoll) {
     PollProvider provider = Provider.of<PollProvider>(context, listen: false);
@@ -118,12 +128,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
     return Card(
       child: Column(
         children: [
-          Consumer<PollProvider>(
-            builder: (context, pollProvider, child) {
-              List<Comment> comments = pollProvider.getCommentsForPoll(widget.poll.id);
+          Consumer<CommentProvider>(
+            builder: (context, provider, child) {
+              List<Comment> comments = provider.getCommentsForPoll(widget.poll.id);
               return Expanded(
                 child: ListView.builder(
-                  itemCount: widget.poll.comments.length,
+                  itemCount: comments.length,
                   itemBuilder: (context, index) {
                     final comment = comments[index];
                     return ListTile(
